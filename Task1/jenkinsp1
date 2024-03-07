@@ -20,9 +20,9 @@ pipeline {
 
             steps {
 
-                sh 'docker build -t flask-app/Task1'
+                sh 'docker build -t flask-app Task1'
 
-                sh 'docker build -t mynginx -f Dockerfile.nginx/Task1'
+                sh 'docker build -t mynginx -f Dockerfile.nginx Task1'
 
             }
 
