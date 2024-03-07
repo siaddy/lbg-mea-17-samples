@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         DOCKER_USER = "agray998"
-        MYSQL_ROOT_PASSWORD = credentials("MYSQL_ROOT_PASSWORD") // comment
+        MYSQL_ROOT_PASSWORD = credentials("MYSQL_ROOT_PASSWORD") // comment 2
     }
     stages {
         stage('Build and Push') {
