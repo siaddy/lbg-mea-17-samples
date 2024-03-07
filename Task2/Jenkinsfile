@@ -7,8 +7,8 @@ pipeline {
     stages {
         stage('Build and Push') {
             steps {
-                sh "docker build -t $DOCKER_USER/task2-db db"
-                sh "docker build -t $DOCKER_USER/task2-app flask-app"
+                sh "docker build -t $DOCKER_USER/task2-db Task2/db"
+                sh "docker build -t $DOCKER_USER/task2-app Task2/flask-app"
                 sh "docker push $DOCKER_USER/task2-db"
                 sh "docker push $DOCKER_USER/task2-app" 
             }
