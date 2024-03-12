@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: example-pod-2
+  name: example-pod-2
+spec:
+  containers:
+  - image: eu.gcr.io/lbg-mea-17/task1-app:v2
+    imagePullPolicy: IfNotPresent
+    name: example-pod-2
