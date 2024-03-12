@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: flask
+  name: flask-pod
+spec:
+  containers:
+  - image: eu.gcr.io/lbg-mea-17/task2-app:v1
+    name: flask-container
+    env:
+    - name: MYSQL_ROOT_PASSWORD
+      value: password123
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: flask
+  name: flask-app
+spec:
+  ports:
+  - port: 5000
+    targetPort: 5000
+    protocol: TCP
+  selector:
+    run: flask
+  type: ClusterIP
