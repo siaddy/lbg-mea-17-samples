@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: example-pod-2
+  name: app-rs
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 33%
+      maxUnavailable: 33%
+  selector:
+    matchLabels:
+      run: example-pod-2
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        run: example-pod-2
+    spec:
+      containers:
+      - image: eu.gcr.io/lbg-mea-17/task1-app:v1
+        imagePullPolicy: IfNotPresent
+        name: example-pod-2
+        env:
+        - name: YOUR_NAME
+          valueFrom:
+           configMapKeyRef:
+             name: app-config-2
+             key: YOUR_NAME
