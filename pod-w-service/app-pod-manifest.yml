@@ -11,4 +11,7 @@ spec:
     name: example-pod-2
     env:
     - name: YOUR_NAME
-      value: Kubernetes
+      valueFrom:
+        configMapKeyRef:
+          name: app-config
+          key: YOUR_NAME
