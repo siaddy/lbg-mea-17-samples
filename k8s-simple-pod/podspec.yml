@@ -1,0 +1,98 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2024-03-12T11:10:24Z"
+  labels:
+    run: example-pod
+  name: example-pod
+  namespace: default
+  resourceVersion: "522603"
+  uid: cf9d9dc7-07d1-408d-9fa2-9b91e6ab820e
+spec:
+  containers:
+  - image: eu.gcr.io/lbg-mea-17/task1-app:v1
+    imagePullPolicy: IfNotPresent
+    name: example-pod
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-648fh
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: gke-agray-cluster-default-pool-a59dc6ac-hqd2
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: kube-api-access-648fh
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2024-03-12T11:10:25Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2024-03-12T11:10:52Z"
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2024-03-12T11:10:52Z"
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2024-03-12T11:10:25Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: containerd://df451a7f2dc5ef8947dd14d324925f58eae6ea7358868648663d227e571b28d2
+    image: eu.gcr.io/lbg-mea-17/task1-app:v1
+    imageID: eu.gcr.io/lbg-mea-17/task1-app@sha256:878530a0c6b4cfc05a65085ee8ab20da617af19f34dbc83d06aeb89a5e5b2d5c
+    lastState: {}
+    name: example-pod
+    ready: true
+    restartCount: 0
+    started: true
+    state:
+      running:
+        startedAt: "2024-03-12T11:10:52Z"
+  hostIP: 10.154.15.205
+  phase: Running
+  podIP: 10.20.2.7
+  podIPs:
+  - ip: 10.20.2.7
+  qosClass: BestEffort
+  startTime: "2024-03-12T11:10:25Z"

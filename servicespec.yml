@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    cloud.google.com/neg: '{"ingress":true}'
+  creationTimestamp: "2024-03-12T13:36:22Z"
+  finalizers:
+  - service.kubernetes.io/load-balancer-cleanup
+  labels:
+    run: example-pod-2
+  name: example-pod-2
+  namespace: default
+  resourceVersion: "590695"
+  uid: 9c9f1718-165b-4aef-8c54-a0761f09c477
+spec:
+  allocateLoadBalancerNodePorts: true
+  clusterIP: 10.124.24.217
+  clusterIPs:
+  - 10.124.24.217
+  externalTrafficPolicy: Cluster
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - nodePort: 31121
+    port: 80
+    protocol: TCP
+    targetPort: 5500
+  selector:
+    run: example-pod-2
+  sessionAffinity: None
+  type: LoadBalancer
+status:
+  loadBalancer:
+    ingress:
+    - ip: 34.147.194.216

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  labels:
+    run: nginx
+spec:
+  containers:
+  - image: eu.gcr.io/lbg-mea-17/task1-custom-nginx:v1
+    name: nginx
+
