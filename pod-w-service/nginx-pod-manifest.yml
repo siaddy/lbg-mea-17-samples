@@ -6,6 +6,13 @@ metadata:
     run: nginx
 spec:
   containers:
-  - image: eu.gcr.io/lbg-mea-17/task1-custom-nginx:v1
+  - image: nginx:latest
     name: nginx
+    volumeMounts:
+    - name: nginx-vol
+      mountPath: /etc/nginx 
+  volumes:
+  - name: nginx-vol
+    configMap:
+      name: nginx-config
 
