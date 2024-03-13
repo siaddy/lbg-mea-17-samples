@@ -6,8 +6,15 @@ metadata:
   name: nginx-pod
 spec:
   containers:
-  - image: eu.gcr.io/lbg-mea-17/task2-proxy:v1
+  - image: nginx:latest
     name: nginx-container
+    volumeMounts:
+    - name: nginx-vol
+      mountPath: /etc/nginx
+  volumes:
+  - name: nginx-vol
+    configMap:
+      name: task2-nginx-config
 ---
 apiVersion: v1
 kind: Service
