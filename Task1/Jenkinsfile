@@ -27,8 +27,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh "gcloud config set account jenkins-k8s@lbg-mea-17.iam.gserviceaccount.com"
-                sh "sed -e 's,{{YOUR_NAME}},'$YOUR_NAME',g;' app-config.yml | tee app-config.yaml"
-                sh "rm app-config.yml"
+                sh "sed -e 's,{{YOUR_NAME}},'$YOUR_NAME',g;' Task1/app-config.yml | tee Task1/app-config.yaml"
+                sh "rm Task1/app-config.yml"
                 sh "kubectl apply -f ."
             }
         }
