@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: app-config-2
 data:
-  YOUR_NAME: Kubernetes2
+  YOUR_NAME: {{YOUR_NAME}}

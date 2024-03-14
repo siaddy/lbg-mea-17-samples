@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+    environment {
+        REGISTRY = "eu.gcr.io/lbg-mea-17"
+        VERSION = "v2"
+        YOUR_NAME = "JenkinsKubernetes"
+    }
+    stages {
+        stage('Build') {
+            steps {
+                sh "docker build -t $REGISTRY/task1-app:$VERSION Task1"
+            }
+        }
+        stage('Test') {
+            steps {
+                sh "echo Testing..."
+                sh "sleep 5"
+                sh "echo PASSED"
+            }
+        }
+        stage('Push') {
+            steps {
+                sh "gcloud config set account agray-container-registry@lbg-mea-17.iam.gserviceaccount.com"
+                sh "docker push $REGISTRY/task1-app:$VERSION"
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh "gcloud config set account jenkins-k8s@lbg-mea-17.iam.gserviceaccount.com"
+                sh "sed -e 's,{{YOUR_NAME}},'$YOUR_NAME',g;' app-config.yml | tee app-config.yaml"
+                sh "rm app-config.yml"
+                sh "kubectl apply -f ."
+            }
+        }
+    }
+    post {
+        always {
+            sh "docker system prune -f"
+            sh "gcloud config set account null"
+        }
+    }
+}
