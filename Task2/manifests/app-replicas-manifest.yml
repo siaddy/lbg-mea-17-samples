@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: flask-container
+  name: app-flask
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 33%
+      maxUnavailable: 33%
+  selector:
+    matchLabels:
+      run: flask-container
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        run: flask-container
+    spec:
+      containers:
+      - image: eu.gcr.io/lbg-mea-17/task2-app:v1
+        name: flask-container
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-creds
+              key: MYSQL_ROOT_PASSWORD
+
