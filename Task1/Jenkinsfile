@@ -20,13 +20,13 @@ pipeline {
         }
         stage('Push') {
             steps {
-                sh "gcloud config set account agray-container-registry@lbg-mea-17.iam.gserviceaccount.com"
+                sh "gcloud config set account simon-srv-new@lbg-mea-17.iam.gserviceaccount.com"
                 sh "docker push $REGISTRY/task1-app:$VERSION"
             }
         }
         stage('Deploy') {
             steps {
-                sh "gcloud config set account jenkins-k8s@lbg-mea-17.iam.gserviceaccount.com"
+                sh "gcloud config set account jenkins-sik8@lbg-mea-17.iam.gserviceaccount.com"
                 sh "kubectl create ns task1 || true"
                 sh "sed -e 's,{{YOUR_NAME}},'$YOUR_NAME',g;' Task1/app-config.yml | tee Task1/app-config.yaml"
                 sh "rm Task1/app-config.yml"
