@@ -6,7 +6,7 @@ metadata:
   name: mysql-pod
 spec:
   containers:
-  - image: eu.gcr.io/lbg-mea-17/task2-db:v1
+  - image: eu.gcr.io/lbg-mea-17/task2-db:{{VERSION}}
     name: mysql-container
     env:
     - name: MYSQL_ROOT_PASSWORD

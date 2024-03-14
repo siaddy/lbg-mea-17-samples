@@ -19,7 +19,7 @@ spec:
         run: flask
     spec:
       containers:
-      - image: eu.gcr.io/lbg-mea-17/task2-app:v2
+      - image: eu.gcr.io/lbg-mea-17/task2-app:{{VERSION}}
         name: flask-container
         env:
         - name: MYSQL_ROOT_PASSWORD

@@ -1,16 +1,15 @@
 pipeline {
     agent any
     environment {
-        DOCKER_USER = "agray998"
+        REGISTRY = "eu.gcr.io/lbg-mea-17"
         MYSQL_ROOT_PASSWORD = credentials("MYSQL_ROOT_PASSWORD") // comment 2
+        VERSION = "v2"
     }
     stages {
-        stage('Build and Push') {
+        stage('Build') {
             steps {
-                sh "docker build -t $DOCKER_USER/task2-db Task2/db"
-                sh "docker build -t $DOCKER_USER/task2-app Task2/flask-app"
-                sh "docker push $DOCKER_USER/task2-db"
-                sh "docker push $DOCKER_USER/task2-app" 
+                sh "docker build -t $REGISTRY/task2-db:$VERSION Task2/db"
+                sh "docker build -t $REGISTRY/task2-app:$VERSION Task2/flask-app"
             }
         }
         stage('Test') {
@@ -20,20 +19,32 @@ pipeline {
                 echo "PASSED"
             }
         }
+        stage('Push') {
+            steps {
+                sh "gcloud config set account agray-container-registry@lbg-mea-17.iam.gserviceaccount.com"
+                sh "docker push $REGISTRY/task2-db:$VERSION"
+                sh "docker push $REGISTRY/task2-app:$VERSION"
+            }
+        }
         stage('Deploy') {
             steps {
-                sh "docker stop \$(docker ps -q) || sleep 1"
-                sh "docker rm \$(docker ps -aq) || sleep 1"
-                sh "docker network inspect task2 && sleep 1 || docker network create task2"
-                sh "docker run -d --network task2 --env MYSQL_ROOT_PASSWORD --name mysql $DOCKER_USER/task2-db"
-                sh "docker run -d --network task2 --env MYSQL_ROOT_PASSWORD --name flask-app $DOCKER_USER/task2-app"
-                sh "docker run -d --network task2 -p 80:80 --mount type=bind,source=\$(pwd)/Task2/nginx/nginx.conf,target=/etc/nginx/nginx.conf nginx"
+                sh "gcloud config set account jenkins-k8s@lbg-mea-17.iam.gserviceaccount.com"
+                sh "kubectl create ns task2 || true"
+                sh "sed -e 's,{{MYSQL_ROOT_PASSWORD}},'$MYSQL_ROOT_PASSWORD',g;' Task2/db-password.yml | kubectl apply -f - --namespace task2"
+                sh "sed -e 's,{{VERSION}},'$VERSION',g;' Task2/manifests/app-manifest.yml | tee Task2/manifests/app-manifest.yaml"
+                sh "sed -e 's,{{VERSION}},'$VERSION',g;' Task2/manifests/db-manifest.yml | tee Task2/manifests/db-manifest.yaml"
+                sh "rm Task2/manifests/app-manifest.yml Task2/manifests/db-manifest.yml"
+                sh "kubectl apply -f Task2/manifests --namespace task2"
+                sh "sleep 60"
+                sh "kubectl get services --namespace task2"
             }
         }
     }
     post {
         always {
             sh "docker system prune -f"
+            sh "docker rmi -f \$(docker images -q)"
+            sh "gcloud config set account null"
         }
     }
 }

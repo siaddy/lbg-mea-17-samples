@@ -19,7 +19,7 @@ spec:
         run: example-pod-2
     spec:
       containers:
-      - image: eu.gcr.io/lbg-mea-17/task1-app:v1
+      - image: eu.gcr.io/lbg-mea-17/task1-app:{{VERSION}}
         imagePullPolicy: IfNotPresent
         name: example-pod-2
         env:
