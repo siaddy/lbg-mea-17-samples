@@ -32,7 +32,7 @@ pipeline {
                 sh "rm Task1/app-config.yml"
                 sh "kubectl apply -f Task1 --namespace task1"
                 sh "sleep 60"
-                sh "kubectl get services --namespace"
+                sh "kubectl get services --namespace task1"
             }
         }
     }
