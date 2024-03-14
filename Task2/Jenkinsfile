@@ -43,7 +43,7 @@ pipeline {
     post {
         always {
             sh "docker system prune -f"
-            sh "docker rmi -f $(docker images -q)"
+            sh "docker rmi -f \$(docker images -q)"
             sh "gcloud config set account null"
         }
     }
